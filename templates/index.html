@@ -1,0 +1,235 @@
+<!DOCTYPE HTML>
+{% load staticfiles %}
+<html>
+<head>
+    <title>财富管理</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport content="width=device-width, initial-scale=1"/>
+    <script src="{% static 'js/ie/html5shiv.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery.scrollex.min.js' %}"></script>
+    <script src="{% static 'js/jquery.scrolly.min.js' %}"></script>
+    <script src="{% static 'js/skel.min.js' %}"></script>
+    <script src="{% static 'js/util.js' %}"></script>
+    <!--[if lte IE 8]><script src="{% static 'js/ie/respond.min.js' %}"></script><![endif]-->
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'Highstock502/code/highstock.js' %}"></script>
+    <script src="{% static 'Highstock502/code/modules/exporting.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/ie8.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/ie9.css' %}" />
+</head>
+<body class="landing">
+    <div id="page-wrapper">
+        <header id="header" class="alt">
+            <h1><a href="index.html">金融科技</a></h1>
+            <nav id="nav">
+                <ul>
+                    <li class="special">
+                        <a href="#menu" class="menuToggle"><span>目录</span></a>
+                        <div id="menu">
+                            <ul>
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="generic.html">Generic</a></li>
+                                <li><a href="elements.html">Elements</a></li>
+                                <li><a href="#">Sign Up</a></li>
+                                <li><a href="#">Log In</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <section id="banner">
+            <div class="inner">
+                <h2>科技 + 金融</h2>
+                <p>李萌设计<br />
+                综合在线智能<br />
+                财富管理平台.</p>
+                <ul class="actions">
+                    <li><a href="#" class="button special">开始体验</a></li>
+                </ul>
+            </div>
+            <a href="#" class="more scrolly">Learn More</a>
+        </section>
+
+        <section id="one" class="wrapper style1 special">
+            <div class="inner">
+                <header class="major">
+                    <h2>互联网金融2.0<br />
+                    科技与金融的完美融合</h2>
+                    <p>引领中国财富管理新趋势.</p>
+                </header>
+                <ul class="icons major">
+                    <li><span class="icon fa-diamond major style1"><span class="label">Diamond</span></span></li>
+                    <li><span class="icon fa-heart-o major style2"><span class="label">Heart</span></span></li>
+                    <li><span class="icon fa-code major style3"><span class="label">Code</span></span></li>
+                </ul>
+            </div>
+        </section>
+
+
+        <section id="two" class="wrapper alt style2">
+            <section class="spotlight">
+                <div id="container1" style="max-width:800px;height:400px;">
+                    <script>
+                       $(function () {
+                            $.getJSON('http://www.hcharts.cn/datas/jsonp.php?filename=aapl-c.json&callback=?', function (data) {
+                                $('#container1').highcharts('StockChart', {
+                                    rangeSelector : {
+                                        selected : 1
+                                    },
+                                    title : {
+                                        text : '苹果公司股票走势图'
+                                    },
+                                    series : [{
+                                        name : 'AAPL Stock Price',
+                                        data : data,
+                                        type : 'areaspline',
+                                        threshold : null,
+                                        tooltip : {
+                                            valueDecimals : 2
+                                        },
+                                        fillColor : {
+                                            linearGradient : {
+                                                x1: 0,
+                                                y1: 0,
+                                                x2: 0,
+                                                y2: 1
+                                            },
+                                            stops : [
+                                                [0, Highcharts.getOptions().colors[0]],
+                                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                                            ]
+                                        }
+                                    }]
+                                });
+                            });
+                        });
+                    </script>
+                </div>
+                <div class="content">
+                    <p>
+                        在此分割————————————————————————————
+                    </p>
+                </div>
+            </section>
+
+            <section class="spotlight">
+                <div id="container2" style="min-width:400px;height:400px;">
+                    <script>
+                        $(function () {
+                            Highcharts.setOptions({
+                                lang: {
+                                    rangeSelectorZoom: ''
+                                }
+                            });
+                            $.getJSON('http://www.hcharts.cn/datas/jsonp.php?filename=aapl-ohlcv.json&callback=?', function (data) {
+                                // split the data set into ohlc and volume
+                                var ohlc = [],
+                                    volume = [],
+                                    dataLength = data.length,
+                                    // set the allowed units for data grouping
+                                    groupingUnits = [[
+                                        'week',                         // unit name
+                                        [1]                             // allowed multiples
+                                    ], [
+                                        'month',
+                                        [1, 2, 3, 4, 6]
+                                    ]],
+                                    i = 0;
+                                for (i; i < dataLength; i += 1) {
+                                    ohlc.push([
+                                        data[i][0], // the date
+                                        data[i][1], // open
+                                        data[i][2], // high
+                                        data[i][3], // low
+                                        data[i][4] // close
+                                    ]);
+                                    volume.push([
+                                        data[i][0], // the date
+                                        data[i][5] // the volume
+                                    ]);
+                                }
+                                // create the chart
+                                $('#container2').highcharts('StockChart', {
+                                    rangeSelector: {
+                                        selected: 1,
+                                        inputDateFormat: '%Y-%m-%d'
+                                    },
+                                    title: {
+                                        text: '苹果历史股价'
+                                    },
+                                    xAxis: {
+                                        dateTimeLabelFormats: {
+                                            millisecond: '%H:%M:%S.%L',
+                                            second: '%H:%M:%S',
+                                            minute: '%H:%M',
+                                            hour: '%H:%M',
+                                            day: '%m-%d',
+                                            week: '%m-%d',
+                                            month: '%y-%m',
+                                            year: '%Y'
+                                        }
+                                    },
+                                    yAxis: [{
+                                        labels: {
+                                            align: 'right',
+                                            x: -3
+                                        },
+                                        title: {
+                                            text: '股价'
+                                        },
+                                        height: '60%',
+                                        lineWidth: 2
+                                    }, {
+                                        labels: {
+                                            align: 'right',
+                                            x: -3
+                                        },
+                                        title: {
+                                            text: '成交量'
+                                        },
+                                        top: '65%',
+                                        height: '35%',
+                                        offset: 0,
+                                        lineWidth: 2
+                                    }],
+                                    series: [{
+                                        type: 'candlestick',
+                                        name: 'AAPL',
+                                        data: ohlc,
+                                        dataGrouping: {
+                                            units: groupingUnits
+                                        }
+                                    }, {
+                                        type: 'column',
+                                        name: 'Volume',
+                                        data: volume,
+                                        yAxis: 1,
+                                        dataGrouping: {
+                                            units: groupingUnits
+                                        }
+                                    }]
+                                });
+                            });
+                        });
+                    </script>
+                </div>
+            </section>
+
+            <section class="spotlight">
+                <div class="image"><img src="{% static 'images/pic03.jpg' %}" alt="" /></div>
+                    <div class="content">
+                        <h2>Today is Thursday.<br />
+                        Tomorrow is Friday.</h2>
+                        <p>This week is the last week of October.</p>
+                    </div>
+            </section>
+        </section>
+    </div>
+
+</body>
+</html>
